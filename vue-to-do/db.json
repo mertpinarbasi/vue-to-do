@@ -1,0 +1,25 @@
+{
+  "ToDoList": [
+    {
+      "title": "Grocery",
+      "description": "Work",
+      "date": "2021-12-21",
+      "isCompleted": true,
+      "id": 1
+    },
+    {
+      "title": "Work",
+      "description": "Harder",
+      "date": "2023-12-21",
+      "isCompleted": false,
+      "id": 2
+    },
+    {
+      "title": "Get",
+      "description": "Bette",
+      "date": "2022-12-21",
+      "isCompleted": false,
+      "id": 3
+    }
+  ]
+}
