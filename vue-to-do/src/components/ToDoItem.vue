@@ -57,13 +57,8 @@ export default {
       appAxios.put(`/ToDoList/${item.id}`, item);
     },
     deleteItem(item) {
-      appAxios
-        .delete(`/ToDoList/${item.id}`)
-        .then(
-          (this.$emit.ToDoItemList = this.$emit.ToDoItemList.filter(
-            (i) => i != item.id
-          ))
-        );
+      console.log("yikes", item);
+      this.$emit("deleteItem", item);
     },
   },
 };
