@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-list-item color="success">
+    <v-list-item>
       <v-list-item-content>
         <v-list-item-title class="py-1">
           <h2>
@@ -17,11 +17,25 @@
       </v-list-item-content>
       <v-spacer></v-spacer>
 
-      <v-btn large v-if="!todoItem.isCompleted" icon @click="setCompleted(todoItem)">
-        <v-icon  >mdi-checkbox-marked-outline </v-icon></v-btn
+      <v-btn
+        large
+        v-if="!todoItem.isCompleted"
+        icon
+        @click="setCompleted(todoItem)"
       >
-      <v-btn large icon v-if="todoItem.isCompleted" @click="setDelete(todoItem)">
-        <v-icon  >mdi-close-box-outline </v-icon></v-btn
+        <v-icon>mdi-checkbox-marked-outline </v-icon></v-btn
+      >
+      <v-btn
+        large
+        icon
+        v-if="todoItem.isCompleted"
+        @click="setDelete(todoItem)"
+      >
+        <v-icon>mdi-close-box-outline </v-icon></v-btn
+      >
+
+      <v-btn large icon @click="deleteItem(todoItem)">
+        <v-icon>mdi-delete </v-icon></v-btn
       >
     </v-list-item>
   </div>
@@ -41,6 +55,15 @@ export default {
       this.$props.todoItem.isCompleted = false;
       console.log("setDelete", this.$props.todoItem.isCompleted);
       appAxios.put(`/ToDoList/${item.id}`, item);
+    },
+    deleteItem(item) {
+      appAxios
+        .delete(`/ToDoList/${item.id}`)
+        .then(
+          (this.$emit.ToDoItemList = this.$emit.ToDoItemList.filter(
+            (i) => i != item.id
+          ))
+        );
     },
   },
 };
