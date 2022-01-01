@@ -7,16 +7,41 @@
         </v-toolbar-title>
         <v-spacer></v-spacer>
 
-        <v-btn large @click="print" icon class="mr-1">
+        <v-btn
+          large
+          @click="(isSearchOpen = true), (searchList = ToDoItemList)"
+          icon
+          class="mr-1"
+        >
           <v-icon>mdi-magnify</v-icon>
         </v-btn>
       </v-toolbar>
-
-      <v-list>
+      <v-text-field
+        class="mx-4 mb-4"
+        clearable
+        v-if="isSearchOpen"
+        hide-details
+        single-line
+        append-outer-icon="mdi-close-box-outline"
+        label="Search"
+        color="black"
+        @click:append-outer="
+          (isSearchOpen = false), (searchString = null), (searchList = null)
+        "
+        v-model="searchString"
+        @keypress="searchToDo"
+      ></v-text-field>
+      <v-list v-if="!isSearchOpen">
         <v-list-item-group v-for="todo in ToDoItemList" :key="todo">
           <ToDoItem :todoItem="todo" @deleteItem="deleteItem($event)" />
         </v-list-item-group>
       </v-list>
+      <v-list v-if="isSearchOpen">
+        <v-list-item-group v-for="todo in searchList" :key="todo">
+          <ToDoItem :todoItem="todo" @deleteItem="deleteItem($event)" />
+        </v-list-item-group>
+      </v-list>
+
       <v-card-action>
         <div style="display: flex; flex-direction: row-reverse" class="ma-2">
           <v-btn
@@ -98,11 +123,6 @@
         <v-card-actions>
           <v-row style="display: flex; flex-direction: row-reverse">
             <div class="ma-2">
-              <v-btn text outlined class="white" @click="isOpenAddNew = false">
-                CLOSE
-              </v-btn>
-            </div>
-            <div class="ma-2">
               <v-btn
                 text
                 outlined
@@ -111,6 +131,11 @@
                 type="submit"
               >
                 SAVE
+              </v-btn>
+            </div>
+            <div class="ma-2">
+              <v-btn text outlined class="white" @click="isOpenAddNew = false">
+                CLOSE
               </v-btn>
             </div>
           </v-row>
@@ -122,7 +147,9 @@
 </template>
 <script>
 import { appAxios } from "./../utils/axios";
+import { nanoid } from "nanoid";
 import ToDoItem from "./../components/ToDoItem.vue";
+
 export default {
   mounted() {
     appAxios.get("/ToDoList").then((res) => {
@@ -132,6 +159,7 @@ export default {
   data() {
     return {
       ToDoItemList: [],
+      searchList: [],
       isOpenAddNew: false,
       newItem: {
         title: null,
@@ -141,6 +169,8 @@ export default {
         createdAt: null,
         id: null,
       },
+      isSearchOpen: false,
+      searchString: null,
     };
   },
   methods: {
@@ -151,7 +181,7 @@ export default {
       const saveItem = { ...this.newItem };
       saveItem.isCompleted = false;
       saveItem.createdAt = new Date().toDateString();
-      saveItem.id = this.ToDoItemList.length + 1;
+      saveItem.id = nanoid();
       console.log(saveItem);
       console.log("mert");
       appAxios.post("/ToDoList", saveItem).then((res) => {
@@ -176,6 +206,12 @@ export default {
         .then(
           (this.ToDoItemList = this.ToDoItemList.filter((i) => i.id != item.id))
         );
+    },
+    searchToDo() {
+      this.searchList = this.ToDoItemList;
+      this.searchList = this.ToDoItemList.filter((i) =>
+        i.title.toLowerCase().includes(this.searchString.toLowerCase())
+      );
     },
   },
   components: { ToDoItem },
