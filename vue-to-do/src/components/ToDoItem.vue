@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-list-item>
+    <v-list-item :color="isChecked">
       <v-list-item-content>
         <v-list-item-title class="py-1">
           <h2>
@@ -44,6 +44,13 @@
 import { appAxios } from "./../utils/axios";
 export default {
   props: ["todoItem"],
+  emits: ["deleteItem"],
+
+  computed: {
+    isChecked() {
+      return this.$props.todoItem.isCompleted ? "green" : "red";
+    },
+  },
   methods: {
     setCompleted(item) {
       this.$props.todoItem.isCompleted = true;

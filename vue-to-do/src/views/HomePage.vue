@@ -151,7 +151,7 @@ import { nanoid } from "nanoid";
 import ToDoItem from "./../components/ToDoItem.vue";
 
 export default {
-  mounted() {
+  created() {
     appAxios.get("/ToDoList").then((res) => {
       this.ToDoItemList = res.data;
     });
