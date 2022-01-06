@@ -33,16 +33,41 @@
       ></v-text-field>
       <v-list v-if="!isSearchOpen">
         <v-list-item-group v-for="todo in ToDoItemList" :key="todo">
-          <ToDoItem :todoItem="todo" @deleteItem="deleteItem($event)" />
+          <ToDoItem
+            :todoItem="todo"
+            @deleteItem="deleteItem($event)"
+            @add-update-completed="addCompleted($event)"
+          />
         </v-list-item-group>
       </v-list>
       <v-list v-if="isSearchOpen">
-        <v-list-item-group v-for="todo in searchList" :key="todo">
-          <ToDoItem :todoItem="todo" @deleteItem="deleteItem($event)" />
+        <v-list-item-group v-for="todo in searchList" :key="todo.id">
+          <ToDoItem
+            :todoItem="todo"
+            @deleteItem="deleteItem($event)"
+            @add-update-completed="addCompleted($event)"
+          />
+        </v-list-item-group>
+      </v-list>
+      <v-toolbar flat color="green accent-2">
+        <v-toolbar-title
+          class="headline outlined text-h4 font-weight-bold mt-1"
+        >
+          Completed
+        </v-toolbar-title>
+      </v-toolbar>
+
+      <v-list>
+        <v-list-item-group v-for="ctodo in completedTodoList" :key="ctodo.id">
+          <ToDoItem
+            :todoItem="ctodo"
+            @deleteItem="deleteItem($event)"
+            @delete-update-completed="deleteCompleted($event)"
+          />
         </v-list-item-group>
       </v-list>
 
-      <v-card-action>
+      <v-card-actions>
         <div style="display: flex; flex-direction: row-reverse" class="ma-2">
           <v-btn
             text
@@ -53,7 +78,7 @@
             ADD NEW
           </v-btn>
         </div>
-      </v-card-action>
+      </v-card-actions>
     </v-card>
 
     <v-spacer> </v-spacer>
@@ -151,15 +176,27 @@ import { nanoid } from "nanoid";
 import ToDoItem from "./../components/ToDoItem.vue";
 
 export default {
+  name: "HomePage",
   created() {
-    appAxios.get("/ToDoList").then((res) => {
-      this.ToDoItemList = res.data;
-    });
+    appAxios
+      .get("/ToDoList")
+      .then((res) => {
+        this.ToDoItemList = res.data;
+      })
+      .then(() => {
+        this.completedTodoList = this.ToDoItemList.filter(
+          (i) => i.isCompleted == true
+        );
+        this.ToDoItemList = this.ToDoItemList.filter(
+          (i) => i.isCompleted == false
+        );
+      });
   },
   data() {
     return {
       ToDoItemList: [],
       searchList: [],
+      completedTodoList: [],
       isOpenAddNew: false,
       newItem: {
         title: null,
@@ -176,6 +213,21 @@ export default {
   methods: {
     openAddNew() {
       this.isOpenAddNew = true;
+    },
+    addCompleted(item) {
+      console.log("add completed");
+
+      this.ToDoItemList = this.ToDoItemList.filter((i) => i.id != item.id);
+
+      this.completedTodoList.push(item);
+    },
+    deleteCompleted(item) {
+      console.log("delete completed");
+
+      this.completedTodoList = this.completedTodoList.filter(
+        (i) => i.id != item.id
+      );
+      this.ToDoItemList.push(item);
     },
     onSubmit() {
       const saveItem = { ...this.newItem };

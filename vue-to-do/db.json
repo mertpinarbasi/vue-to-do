@@ -4,7 +4,7 @@
       "title": "Grocery",
       "description": "React",
       "date": "2021",
-      "isCompleted": true,
+      "isCompleted": false,
       "id": 1
     },
     {
@@ -24,12 +24,12 @@
       "id": "rP-uEtc3OVfh_zFSUVnES"
     },
     {
-      "title": "God's Plan ",
-      "description": "ASDASDASD",
-      "date": "ADASDASD",
+      "title": "Market Alışverişi",
+      "description": "Alışveriş Listesi\nLorem \nLorem \nLorem \nLorem ",
+      "date": "Yarın",
       "isCompleted": false,
-      "createdAt": "Sun Jan 02 2022",
-      "id": "4Ice0SElc3wdRuSvK_zv4"
+      "createdAt": "Tue Jan 04 2022",
+      "id": "3wJ38HKMQufPZvw3BbuC-"
     }
   ]
 }
