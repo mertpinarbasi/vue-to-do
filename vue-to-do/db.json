@@ -4,14 +4,14 @@
       "title": "Grocery",
       "description": "React",
       "date": "2021",
-      "isCompleted": false,
+      "isCompleted": true,
       "id": 1
     },
     {
       "title": "Ketchup ",
       "description": "asdasdasda",
       "date": "asdasdasd",
-      "isCompleted": true,
+      "isCompleted": false,
       "createdAt": "Sun Jan 02 2022",
       "id": "iTlR-I44pkn0qi8WEU4D0"
     },
@@ -19,7 +19,7 @@
       "title": "Elma",
       "description": "dasdasdasd",
       "date": "asdasdadasdaasdasdas",
-      "isCompleted": true,
+      "isCompleted": false,
       "createdAt": "Sun Jan 02 2022",
       "id": "rP-uEtc3OVfh_zFSUVnES"
     },
@@ -30,6 +30,14 @@
       "isCompleted": false,
       "createdAt": "Tue Jan 04 2022",
       "id": "3wJ38HKMQufPZvw3BbuC-"
+    },
+    {
+      "title": "NewTodo",
+      "description": "lorem",
+      "date": "template",
+      "isCompleted": false,
+      "createdAt": "Fri Jan 07 2022",
+      "id": "UPv487AhbLq41XA8ky36v"
     }
   ]
 }

@@ -32,13 +32,19 @@
         @keypress="searchToDo"
       ></v-text-field>
       <v-list v-if="!isSearchOpen">
-        <v-list-item-group v-for="todo in ToDoItemList" :key="todo">
-          <ToDoItem
-            :todoItem="todo"
-            @deleteItem="deleteItem($event)"
-            @add-update-completed="addCompleted($event)"
-          />
-        </v-list-item-group>
+        <transition-group
+          class="fade"
+          enter-active-class="animate__animated animate__flipInX"
+          leave-active-class="animate_animated animate__flipOutX"
+        >
+          <v-list-item-group v-for="todo in ToDoItemList" :key="todo">
+            <ToDoItem
+              :todoItem="todo"
+              @deleteItem="deleteItem($event)"
+              @add-update-completed="addCompleted($event)"
+            />
+          </v-list-item-group>
+        </transition-group>
       </v-list>
       <v-list v-if="isSearchOpen">
         <v-list-item-group v-for="todo in searchList" :key="todo.id">
@@ -58,17 +64,24 @@
       </v-toolbar>
 
       <v-list>
-        <v-list-item-group v-for="ctodo in completedTodoList" :key="ctodo.id">
-          <ToDoItem
-            :todoItem="ctodo"
-            @deleteItem="deleteItem($event)"
-            @delete-update-completed="deleteCompleted($event)"
-          />
-        </v-list-item-group>
+        <transition-group
+          class="fade"
+          enter-active-class="animate__animated animate__flipInX"
+          leave-active-class="animate_animated animate__flipOutX"
+        >
+          <v-list-item-group v-for="ctodo in completedTodoList" :key="ctodo.id">
+            <ToDoItem
+              :todoItem="ctodo"
+              @deleteItem="deleteItem($event)"
+              @delete-update-completed="deleteCompleted($event)"
+            />
+          </v-list-item-group>
+        </transition-group>
       </v-list>
 
       <v-card-actions>
-        <div style="display: flex; flex-direction: row-reverse" class="ma-2">
+        <v-spacer></v-spacer>
+        <div class="ma-2">
           <v-btn
             text
             outlined
@@ -146,7 +159,7 @@
 
         <v-spacer></v-spacer>
         <v-card-actions>
-          <v-row style="display: flex; flex-direction: row-reverse">
+          <v-row style="display: flex; flex-direction: row-reverse;">
             <div class="ma-2">
               <v-btn
                 text
@@ -154,6 +167,7 @@
                 class="green accent-2"
                 @click="(isOpenAddNew = false), onSubmit()"
                 type="submit"
+            
               >
                 SAVE
               </v-btn>
@@ -218,7 +232,7 @@ export default {
       console.log("add completed");
 
       this.ToDoItemList = this.ToDoItemList.filter((i) => i.id != item.id);
-
+      this.searchList = this.searchList.filter((i)=>  i.id!=item.id);
       this.completedTodoList.push(item);
     },
     deleteCompleted(item) {
@@ -269,3 +283,9 @@ export default {
   components: { ToDoItem },
 };
 </script>
+<style>
+
+.animate__animated {
+  animation-duration: 0.5s;
+}
+</style>
