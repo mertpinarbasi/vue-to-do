@@ -189,7 +189,6 @@ import { appAxios } from "./../utils/axios";
 import { nanoid } from "nanoid";
 import ToDoItem from "./../components/ToDoItem.vue";
 
-
 export default {
   name: "HomePage",
   created() {
